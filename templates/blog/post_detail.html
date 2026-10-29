@@ -27,10 +27,13 @@
     <h3>Comentários</h3>
     
     {% if user.is_authenticated %}
-        <!-- O formulário foi removido. Agora é apenas um link (a) direto com o design de botão! -->
-        <a href="{% url 'add_comment_to_post' pk=post.pk %}" class="btn-padrao" style="display: inline-block; margin-top: 10px; margin-bottom: 25px;">Adicionar Comentário</a>
+        <!-- Mostrar formulário/botão apenas a quem tem login -->
+        <form method="POST" action="{% url 'add_comment_to_post' pk=post.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-padrao">Adicionar Comentário</button>
+        </form>
     {% else %}
-        <!-- A mensagem de login para anónimos que já tínhamos configurado -->
+        <!-- Mensagem para visitantes anônimos -->
         <p style="padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ff7f00; border-radius: 5px;">
             Para deixar a sua opinião, por favor <a href="/admin/login/?next={{ request.path }}">faça login</a> no sistema.
         </p>
