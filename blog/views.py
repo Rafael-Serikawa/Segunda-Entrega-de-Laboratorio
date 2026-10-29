@@ -5,6 +5,13 @@ from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, CommentForm
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ['titulo', 'conteudo', 'categorias']
+    template_name = 'blog/post_form.html'
 
 # R - Read (Listagem)
 class PostListView(generic.ListView):
@@ -19,32 +26,31 @@ class PostDetailView(generic.DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
-# C - Create
-class PostCreateView(generic.CreateView):
+# View para Criar Post (Protegida)
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('post_list')
+    success_url = '/'
 
-# U - Update
-class PostUpdateView(generic.UpdateView):
+# View para Editar Post (Protegida)
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
-    
-    def get_success_url(self):
-        return reverse_lazy('post_detail', kwargs={'pk': self.object.pk})
+    success_url = '/'
 
-# D - Delete (Usa a página de confirmação automaticamente)
-class PostDeleteView(generic.DeleteView):
+# View para Excluir Post (Protegida)
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
-    success_url = reverse_lazy('post_list')
+    success_url = '/'
 
 
 @login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -55,7 +61,7 @@ def add_comment_to_post(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = CommentForm()
-    return render(request, 'blog/add_comment_to_post.html', {'form': form})
+    return render(request, 'blog/add_comment_to_post.html', {'form': form, 'post': post})
 
 # View para listar todas as categorias
 class CategoriaListView(generic.ListView):

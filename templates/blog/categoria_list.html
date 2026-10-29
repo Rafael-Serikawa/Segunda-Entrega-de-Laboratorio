@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Categorias do Blog</h2>
-    <ul>
+    
+    <ul class="categoria-lista">
         {% for categoria in categorias %}
-            <li><a href="{% url 'categoria_detail' pk=categoria.pk %}">{{ categoria.nome }}</a> - {{ categoria.descricao }}</li>
+            <li>
+                <a href="{% url 'categoria_detail' pk=categoria.pk %}">{{ categoria.nome }}</a>
+                <p>{{ categoria.descricao }}</p>
+            </li>
         {% endfor %}
     </ul>
-    <a href="{% url 'post_list' %}">Voltar aos Posts</a>
+    
+    <div style="margin-top: 30px;">
+        <a href="{% url 'post_list' %}" class="btn-cancelar" style="background-color: #1a252c;">⬅ Voltar aos Posts</a>
+    </div>
 {% endblock %}

@@ -1,10 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>{% if categoria %}Posts da Categoria: {{ categoria.nome }}{% else %}Lista de Posts{% endif %}</h2>
-    <a href="{% url 'post_create' %}">Criar Novo Post</a>
-    <hr>
-    {% for post in posts %}
-        <h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.titulo }}</a></h3>
-        <p>Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</p>
-    {% endfor %}
+    <h2 style="color: #1a252c;">{% if categoria %}Posts da Categoria: {{ categoria.nome }}{% else %}Lista de Posts{% endif %}</h2>
+    
+    <div class="categoria-acoes">
+        {% if user.is_superuser %}
+        <a href="{% url 'post_create' %}">Criar Novo Post</a>
+        {% endif %}
+        
+        {% if categoria %}
+            <a href="{% url 'categoria_list' %}">⬅ Voltar às Categorias</a>
+        {% endif %}
+    </div>
+
+    <ul class="post-lista">
+        {% for post in posts %}
+            <li>
+                <h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.titulo }}</a></h3>
+                
+                <p class="post-meta">Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</p>
+            </li>
+        {% empty %}
+            <li>
+                <p class="post-meta" style="color: #1a252c;">Nenhum post publicado ainda.</p>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

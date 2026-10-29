@@ -2,9 +2,14 @@
 {% block content %}
     <h2>Novo Comentário</h2>
     <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enviar Comentário</button>
-    </form>
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <div class="form-actions" style="margin-top: 20px;">
+        <a href="{% url 'post_detail' pk=post.pk %}" class="btn-cancelar">Cancelar</a>
+    
+        <button type="submit" style="margin: 0;">Enviar Comentário</button>
+    </div>
+</form>
 
 {% endblock %}

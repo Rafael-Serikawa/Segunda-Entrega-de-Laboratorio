@@ -2,9 +2,12 @@
 {% block content %}
     <h2>Remover Post</h2>
     <p>Tem certeza que deseja apagar o post "{{ post.titulo }}"?</p>
+    
     <form method="POST">
         {% csrf_token %}
-        <button type="submit">Sim, remover</button>
+        <div class="form-actions">
+            <a href="{% url 'post_list' %}" class="btn-cancelar">Cancelar</a>
+            <button type="submit">Confirmar</button>
+        </div>
     </form>
-    <a href="{% url 'post_detail' pk=post.pk %}">Cancelar</a>
 {% endblock %}
