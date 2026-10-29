@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Lista de Posts</h2>
+    <a href="{% url 'post_create' %}">Criar Novo Post</a>
+    <hr>
+    {% for post in posts %}
+        <h3><a href="{% url 'post_detail' pk=post.pk %}">{{ post.titulo }}</a></h3>
+        <p>Publicado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</p>
+    {% endfor %}
+{% endblock %}
