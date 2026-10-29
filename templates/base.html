@@ -8,6 +8,9 @@
 <body>
     <header>
         <h1><a href="{% url 'post_list' %}">Meu Blog</a></h1>
+        <nav>
+            <a href="{% url 'categoria_list' %}">Ver Categorias</a>
+        </nav>
     </header>
     <main>
         {% block content %}

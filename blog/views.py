@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import Post
+from .models import Post, Category
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm, CommentForm
@@ -56,3 +56,15 @@ def add_comment_to_post(request, pk):
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
+# View para listar todas as categorias
+class CategoriaListView(generic.ListView):
+    model = Category
+    template_name = 'blog/categoria_list.html'
+    context_object_name = 'categorias'
+
+# View para a página individual da categoria
+def categoria_detail(request, pk):
+    categoria = get_object_or_404(Category, pk=pk) # Retorna 404 se não existir
+    posts = categoria.posts.all()
+    return render(request, 'blog/post_list.html', {'posts': posts, 'categoria': categoria})

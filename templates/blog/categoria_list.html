@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Categorias do Blog</h2>
+    <ul>
+        {% for categoria in categorias %}
+            <li><a href="{% url 'categoria_detail' pk=categoria.pk %}">{{ categoria.nome }}</a> - {{ categoria.descricao }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'post_list' %}">Voltar aos Posts</a>
+{% endblock %}

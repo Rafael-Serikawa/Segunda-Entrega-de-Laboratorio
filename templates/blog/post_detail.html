@@ -7,6 +7,14 @@
         {{ post.conteudo|safe }}
     </div>
     <hr>
+    <p><strong>Categorias:</strong>
+        {% for categoria in post.categorias.all %}
+            <a href="{% url 'categoria_detail' pk=categoria.pk %}">{{ categoria.nome }}</a>{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Sem categoria.
+        {% endfor %}
+    </p>
+    <hr>
     <a href="{% url 'post_update' pk=post.pk %}">Editar</a> | 
     <a href="{% url 'post_delete' pk=post.pk %}">Remover</a> |
     <a href="{% url 'post_list' %}">Voltar</a>

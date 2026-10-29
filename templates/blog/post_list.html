@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Lista de Posts</h2>
+    <h2>{% if categoria %}Posts da Categoria: {{ categoria.nome }}{% else %}Lista de Posts{% endif %}</h2>
     <a href="{% url 'post_create' %}">Criar Novo Post</a>
     <hr>
     {% for post in posts %}
