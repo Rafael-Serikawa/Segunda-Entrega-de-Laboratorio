@@ -1,15 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>{{ post.titulo }}</h2>
-    <!-- O filtro 'date' é um requisito do laboratório -->
     <p>Postado em: {{ post.data_postagem|date:"d/m/Y H:i" }}</p>
     <hr>
     <div>
-        <!-- O filtro 'safe' permite renderizar HTML salvo no banco -->
         {{ post.conteudo|safe }}
     </div>
     <hr>
     <a href="{% url 'post_update' pk=post.pk %}">Editar</a> | 
     <a href="{% url 'post_delete' pk=post.pk %}">Remover</a> |
     <a href="{% url 'post_list' %}">Voltar</a>
+    <hr>
+    
+    <!-- Seção de Comentários -->
+    <h3>Comentários</h3>
+    <a href="{% url 'add_comment_to_post' pk=post.pk %}">Adicionar Comentário</a>
+    
+    {% for comment in post.comments.all %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+            <strong>{{ comment.autor.username }}</strong> 
+            <small>em {{ comment.data_postagem|date:"d/m/Y H:i" }}</small>
+            <p>{{ comment.texto }}</p>
+        </div>
+    {% empty %}
+        <p>Ainda não há comentários. Seja o primeiro a comentar!</p>
+    {% endfor %}
 {% endblock %}
